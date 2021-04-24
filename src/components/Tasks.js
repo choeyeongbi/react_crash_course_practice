@@ -1,13 +1,18 @@
-import { data } from "./data";
-import { useState } from "react";
+import EachTask from "./EachTask";
 
-const Tasks = ({ tasks }) => {
+const Tasks = ({ tasks, onDelete, onToggle }) => {
+  console.log("Tasks>", tasks);
   return (
-    <div>
-      {tasks.map((task) => (
-        <h3 key={task.id}>{task.text}</h3>
+    <>
+      {tasks.map((task, i) => (
+        <EachTask
+          key={i}
+          eachTask={task}
+          onDelete={onDelete}
+          onToggle={onToggle}
+        />
       ))}
-    </div>
+    </>
   );
 };
 
