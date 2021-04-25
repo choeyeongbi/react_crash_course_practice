@@ -1,7 +1,7 @@
-import React from "react";
+import { memo } from "react";
 import { RiDeleteBackLine } from "react-icons/ri";
 
-const DeleteTask = ({ onDelete, dataId }) => {
+const DeleteTask = memo(({ onDelete, dataId }) => {
   return (
     <div>
       <RiDeleteBackLine
@@ -10,6 +10,6 @@ const DeleteTask = ({ onDelete, dataId }) => {
       />
     </div>
   );
-};
+});
 
 export default DeleteTask;

@@ -1,6 +1,6 @@
 import EachTask from "./EachTask";
-
-const Tasks = ({ tasks, onDelete, onToggle }) => {
+import { memo } from "react";
+const Tasks = memo(({ tasks, onDelete, onToggle }) => {
   console.log("Tasks>", tasks);
   return (
     <>
@@ -14,6 +14,6 @@ const Tasks = ({ tasks, onDelete, onToggle }) => {
       ))}
     </>
   );
-};
+});
 
 export default Tasks;
