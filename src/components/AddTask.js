@@ -1,6 +1,6 @@
-import { useState, memo } from "react";
+import { useState, useCallback } from "react";
 
-const AddTask = memo(({ onAdd }) => {
+const AddTask = ({ onAdd }) => {
   const [text, setText] = useState("");
   const [day, setDay] = useState("");
   const [reminder, setReminder] = useState(false);
@@ -31,7 +31,7 @@ const AddTask = memo(({ onAdd }) => {
           type="text"
           placeholder="add task "
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={useCallback((e) => setText(e.target.value), [])}
         />
       </div>
       <div className="form-control">
@@ -40,7 +40,7 @@ const AddTask = memo(({ onAdd }) => {
           type="date"
           placeholder="add date"
           value={day}
-          onChange={(e) => setDay(e.target.value)}
+          onChange={useCallback((e) => setDay(e.target.value), [])}
         />
       </div>
       <div className="form-control form-control-check">
@@ -49,12 +49,15 @@ const AddTask = memo(({ onAdd }) => {
           type="checkbox"
           checked={reminder}
           value={reminder}
-          onChange={(e) => setReminder(e.currentTarget.checked)}
+          onChange={useCallback(
+            (e) => setReminder(e.currentTarget.checked),
+            []
+          )}
         />
       </div>
       <input type="submit" value="SAVE" className="btn btn-block" />
     </form>
   );
-});
+};
 
 export default AddTask;

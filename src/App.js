@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
@@ -32,6 +32,7 @@ const App = () => {
   const [showAddTask, setShowAddTask] = useState(false);
 
   useEffect(() => {
+    //렌더링 될때마다 실행
     console.log("useEffect()");
     const getTasks = async () => {
       const tasksFromServer = await fetchTasks();
@@ -42,68 +43,105 @@ const App = () => {
   }, []);
 
   const fetchTasks = async () => {
-    const res = await fetch("http://localhost:3000/tasks");
-    const data = res.json();
-    console.log("fetchTasks() data>", data);
-    return data;
+    // async() 함수 내부에서만 await를 사용할 수 있습니다.
+    // await가 붙은 요청들은 비동기처리로, 결괏값을 얻을때까지 기다려줍니다.
+    // try catch로 예외처리가 가능합니다.
+    try {
+      const res = await fetch("http://localhost:3000/tasks");
+      const data = res.json();
+      console.log("fetchTasks() res data>", data);
+      return data;
+    } catch (e) {
+      console.log("fetchTasks() error > ", e);
+    }
   };
 
   const fetchTask = async (id) => {
-    const res = await fetch(`http://localhost:3000/tasks/${id}`);
-    const data = await res.json();
-    console.log("fetchTask() data>", data);
+    try {
+      const res = await fetch(`http://localhost:3000/tasks/${id}`);
+      const data = await res.json();
+      console.log("fetchTask() data, id >", data, id);
 
-    return data;
+      return data;
+    } catch (e) {
+      console.log("fetchTask() error >", e);
+    }
   };
 
-  const addTask = async (task) => {
-    console.log("addTask()", task);
-    const res = await fetch("http://localhost:3000/tasks", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify(task),
-    });
+  const addTask = useCallback(
+    async (task) => {
+      try {
+        console.log("addTask() task >", task);
+        const res = await fetch("http://localhost:3000/tasks", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(task),
+        });
 
-    const data = await res.json();
-    setTasks([...tasks, data]);
-  };
+        const data = await res.json();
+        console.log("addTask() data >", data);
+        setTasks([...tasks, data]);
+      } catch (e) {
+        console.log("addTask() error >", e);
+      }
+    },
+    [tasks]
+  );
 
   const deleteTask = async (id) => {
-    console.log("deleteTask()", id);
+    try {
+      console.log("deleteTask() id >", id);
 
-    const res = await fetch(`http://localhost:3000/tasks/${id}`, {
-      method: "DELETE",
-    });
-    res.status === 200
-      ? setTasks(tasks.filter((task) => task.id !== id))
-      : alert("Error deleting tasks");
+      const res = await fetch(`http://localhost:3000/tasks/${id}`, {
+        method: "DELETE",
+      });
+      console.log("deleteTask() res >", res.json());
+      res.status === 200
+        ? setTasks(tasks.filter((task) => task.id !== id))
+        : alert("Error deleting tasks");
+    } catch (e) {
+      console.log("deleteTask() error >", e);
+    }
   };
 
-  const toggleReminder = async (id) => {
-    console.log("toggleReminder()", id);
-    const taskToToggle = await fetchTask(id);
-    const updateTask = { ...taskToToggle, reminder: !taskToToggle.reminder };
+  const toggleReminder = useCallback(
+    async (id) => {
+      try {
+        console.log("toggleReminder() id >", id);
+        const taskToToggle = await fetchTask(id);
+        const updateTask = {
+          ...taskToToggle,
+          reminder: !taskToToggle.reminder,
+        };
 
-    const res = await fetch(`http://localhost:3000/tasks/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updateTask),
-    });
-    const data = await res.json();
+        const res = await fetch(`http://localhost:3000/tasks/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateTask),
+        });
+        const data = await res.json();
 
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, reminder: data.reminder } : task
-      )
-    );
-  };
+        console.log("toggleReminder() data >", data);
+        setTasks(
+          tasks.map((task) =>
+            task.id === id ? { ...task, reminder: data.reminder } : task
+          )
+        );
+      } catch (e) {
+        console.log("toggleReminder() error >", e);
+      }
+    },
+    [tasks]
+  );
   return (
     <Router>
       <div className="container">
         <Header
-          onAdd={() => setShowAddTask(!showAddTask)}
+          onAdd={useCallback(() => {
+            setShowAddTask(!showAddTask);
+          }, [showAddTask])}
           showAdd={showAddTask}
         />
         <hr />
