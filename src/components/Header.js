@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import Button from "./Button";
 import { useLocation } from "react-router-dom";
+import { memo } from "react";
 
-const Header = ({ title, onAdd, showAdd }) => {
+const Header = memo(({ title, onAdd, showAdd }) => {
   const location = useLocation();
-
-  const onClickBtn = (e) => {
-    console.log("click", e);
-  };
+  console.log("header() location>", location);
+  console.log("header() onAdd", onAdd);
+  console.log("header() showAdd", showAdd);
 
   return (
     <header className="header">
@@ -16,12 +16,12 @@ const Header = ({ title, onAdd, showAdd }) => {
         <Button
           color={showAdd ? "lightgray" : "darkgray"}
           text={showAdd ? "-" : "+"}
-          onClick={onClickBtn}
+          onClick={onAdd}
         />
       )}
     </header>
   );
-};
+});
 
 Header.defaultProps = {
   title: "Task Tracker",

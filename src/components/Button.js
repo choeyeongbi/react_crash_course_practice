@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
+const Button = memo(({ color, text, onClick }) => {
+  console.log("button click()");
 
-const Button = ({ color, text, onClick }) => {
   return (
     <button
       style={{ backgroundColor: color }}
@@ -10,7 +12,7 @@ const Button = ({ color, text, onClick }) => {
       <h2>{text}</h2>
     </button>
   );
-};
+});
 
 Button.defaultProps = {
   color: "steelblue",

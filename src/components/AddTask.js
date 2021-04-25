@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 
-const AddTask = ({ onAdd }) => {
+const AddTask = memo(({ onAdd }) => {
   const [text, setText] = useState("");
   const [day, setDay] = useState("");
   const [reminder, setReminder] = useState(false);
 
+  console.log("add task() onAdd", onAdd);
+
   const onSubmit = (e) => {
     e.preventDefault();
-    e.stopPropagation();
 
     if (!text) {
-      alert("add a task!");
+      alert("please add a task!");
       return;
     }
+    console.log("AddTask() onSubmit");
 
     onAdd({ text, day, reminder });
 
@@ -29,7 +31,7 @@ const AddTask = ({ onAdd }) => {
           type="text"
           placeholder="add task "
           value={text}
-          onChange={(e) => setText(e.currentTarget.value)}
+          onChange={(e) => setText(e.target.value)}
         />
       </div>
       <div className="form-control">
@@ -38,7 +40,7 @@ const AddTask = ({ onAdd }) => {
           type="date"
           placeholder="add date"
           value={day}
-          onChange={(e) => setDay(e.currentTarget.value)}
+          onChange={(e) => setDay(e.target.value)}
         />
       </div>
       <div className="form-control form-control-check">
@@ -53,6 +55,6 @@ const AddTask = ({ onAdd }) => {
       <input type="submit" value="SAVE" className="btn btn-block" />
     </form>
   );
-};
+});
 
 export default AddTask;
