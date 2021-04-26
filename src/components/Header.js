@@ -14,7 +14,7 @@ const Header = memo(({ title, onAdd, showAdd }) => {
       <h1>{title}</h1>
       {location.pathname === "/" && (
         <Button
-          color={showAdd ? "lightgray" : "darkgray"}
+          color={showAdd ? "rgb(201, 171, 171)" : "darkgray"}
           text={showAdd ? "-" : "+"}
           onClick={onAdd}
         />

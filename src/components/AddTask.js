@@ -24,39 +24,44 @@ const AddTask = ({ onAdd }) => {
   };
 
   return (
-    <form className="add-fotm" onSubmit={onSubmit}>
-      <div className="form-control">
-        <label>Task</label>
-        <input
-          type="text"
-          placeholder="add task "
-          value={text}
-          onChange={useCallback((e) => setText(e.target.value), [])}
-        />
-      </div>
-      <div className="form-control">
-        <label>DAY and TIME</label>
-        <input
-          type="date"
-          placeholder="add date"
-          value={day}
-          onChange={useCallback((e) => setDay(e.target.value), [])}
-        />
-      </div>
-      <div className="form-control form-control-check">
-        <label>setting Reminder</label>
-        <input
-          type="checkbox"
-          checked={reminder}
-          value={reminder}
-          onChange={useCallback(
-            (e) => setReminder(e.currentTarget.checked),
-            []
-          )}
-        />
-      </div>
-      <input type="submit" value="SAVE" className="btn btn-block" />
-    </form>
+    <>
+      <form className="add-fotm" onSubmit={onSubmit}>
+        <div className="form-control">
+          <label>Task</label>
+          <input
+            type="text"
+            placeholder="add task "
+            value={text}
+            onChange={useCallback((e) => setText(e.target.value), [])}
+          />
+        </div>
+        <div className="form-control">
+          <label>DAY and TIME</label>
+          <input
+            type="text"
+            placeholder="add date"
+            value={day}
+            onChange={useCallback((e) => setDay(e.target.value), [])}
+          />
+        </div>
+        <div className="form-control form-control-check">
+          <label>setting Reminder</label>
+          <input
+            type="checkbox"
+            checked={reminder}
+            value={reminder}
+            onChange={useCallback(
+              (e) => setReminder(e.currentTarget.checked),
+              []
+            )}
+          />
+        </div>
+        <input type="submit" value="SAVE" className="btn btn-block" />
+      </form>
+      <br />
+      <hr />
+      <br />
+    </>
   );
 };
 
