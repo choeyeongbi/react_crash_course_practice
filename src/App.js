@@ -6,33 +6,12 @@ import Footer from "./components/Footer";
 import AddTask from "./components/AddTask";
 import About from "./components/About";
 
-const tasks = [
-  {
-    id: 1,
-    text: "doctors appointment",
-    day: "Feb 5th at 14:30",
-    reminder: true,
-  },
-  {
-    id: 2,
-    text: "meeting at school",
-    day: "Feb 7th at 13:30",
-    reminder: true,
-  },
-  {
-    id: 3,
-    text: "food market shopping",
-    day: "Feb 6th at 14:00",
-    reminder: false,
-  },
-];
-
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [showAddTask, setShowAddTask] = useState(false);
 
   useEffect(() => {
-    //렌더링 될때마다 실행
+    //렌더링이 된 직후 바로 실행
     console.log("useEffect()");
     const getTasks = async () => {
       console.log("1");
@@ -84,7 +63,7 @@ const App = () => {
         console.log("App.js addTask() data >", data);
         setTasks([...tasks, data]);
       } catch (e) {
-        console.log("addTask() error >", e);
+        console.log("App.js addTask() error >", e);
       }
     },
     [tasks]
@@ -93,50 +72,50 @@ const App = () => {
   const deleteTask = async (id) => {
     try {
       console.log("deleteTask() id >", id);
-
-      const res = await fetch(`http://localhost:5000/tasks/${id}`, {
-        method: "DELETE",
-      });
-      console.log("deleteTask() res >", res.json());
-      res.status === 200
-        ? setTasks(tasks.filter((task) => task.id !== id))
-        : alert("Error deleting tasks");
+      if (window.confirm("정말 지우시겠습니까?")) {
+        const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+          method: "DELETE",
+        });
+        console.log("App.js deleteTask() res >", res.json());
+        res.status === 200
+          ? setTasks(tasks.filter((task) => task.id !== id))
+          : alert("Error deleting tasks");
+      } else {
+        return;
+      }
     } catch (e) {
-      console.log("deleteTask() error >", e);
+      console.log("App.js deleteTask() error >", e);
     }
   };
 
-  const toggleReminder = useCallback(
-    async (id) => {
-      try {
-        console.log("toggleReminder() id >", id);
-        const taskToToggle = await fetchTask(id);
-        const updateTask = {
-          ...taskToToggle,
-          reminder: !taskToToggle.reminder,
-        };
+  const toggleReminder = async (id) => {
+    try {
+      console.log("App.js toggleReminder() id >", id);
+      const taskToToggle = await fetchTask(id);
+      const updateTask = {
+        ...taskToToggle,
+        reminder: !taskToToggle.reminder,
+      };
 
-        const res = await fetch(`http://localhost:5000/tasks/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updateTask),
-        });
-        const data = await res.json();
+      const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(updateTask),
+      });
+      const data = await res.json();
 
-        console.log("toggleReminder() data >", data);
-        setTasks(
-          tasks.map((task) =>
-            task.id === id ? { ...task, reminder: data.reminder } : task
-          )
-        );
-      } catch (e) {
-        console.log("toggleReminder() error >", e);
-      }
-    },
-    [tasks]
-  );
+      console.log("App.js toggleReminder() data >", data);
+      setTasks(
+        tasks.map((task) =>
+          task.id === id ? { ...task, reminder: data.reminder } : task
+        )
+      );
+    } catch (e) {
+      console.log("App.js toggleReminder() error >", e);
+    }
+  };
   return (
     <Router>
       <div className="container">
