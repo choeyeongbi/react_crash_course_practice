@@ -19,8 +19,8 @@
       "reminder": false
     },
     {
-      "text": "meet somone",
-      "day": "wednesday",
+      "text": "할일!",
+      "day": "목요일에",
       "reminder": false,
       "id": 4
     }
