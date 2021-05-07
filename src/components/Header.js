@@ -16,7 +16,7 @@ const Header = memo(({ title, onAdd, showAdd }) => {
         <Button
           color={showAdd ? "rgb(201, 171, 171)" : "darkgray"}
           text={showAdd ? "-" : "+"}
-          onClick={onAdd}
+          onClick={()=>onAdd}
         />
       )}
     </header>

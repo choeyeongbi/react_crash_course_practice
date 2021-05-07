@@ -32,7 +32,7 @@ const AddTask = ({ onAdd }) => {
             type="text"
             placeholder="add task "
             value={text}
-            onChange={useCallback((e) => setText(e.target.value), [])}
+            onChange={(e) => setText(e.target.value)}
           />
         </div>
         <div className="form-control">
@@ -41,7 +41,7 @@ const AddTask = ({ onAdd }) => {
             type="text"
             placeholder="add date"
             value={date}
-            onChange={useCallback((e) => setDate(e.target.value), [])}
+            onChange={(e) => setDate(e.target.value)}
           />
         </div>
         <div className="form-control form-control-check">
@@ -50,10 +50,7 @@ const AddTask = ({ onAdd }) => {
             type="checkbox"
             checked={reminder}
             value={reminder}
-            onChange={useCallback(
-              (e) => setReminder(e.currentTarget.checked),
-              []
-            )}
+            onChange={ (e) => setReminder(e.currentTarget.checked)}
           />
         </div>
         <input type="submit" value="SAVE" className="btn btn-block" />

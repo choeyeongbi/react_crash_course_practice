@@ -1,6 +1,6 @@
 import DeleteTask from "./DeleteTask";
-
-const EachTask = ({ eachTask, onDelete, onToggle }) => {
+import ModifyTask from "./ModifyTask"
+const EachTask = ({ eachTask, onDelete, onToggle,onModify }) => {
 
   return (
     <div
@@ -10,11 +10,16 @@ const EachTask = ({ eachTask, onDelete, onToggle }) => {
       {eachTask.text}
       <h2>
         <DeleteTask
-          onDelete={onDelete}
-          dataId={eachTask.id}
+          onDelete={onDelete}      
           eachTask={eachTask}
         />
       </h2>
+      <h3>
+        <ModifyTask 
+        onModify={onModify}
+        eachTask={eachTask}
+        />
+      </h3>
 
       <p>{eachTask.date}</p>
     </div>

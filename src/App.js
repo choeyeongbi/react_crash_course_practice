@@ -5,12 +5,13 @@ import Tasks from "./components/Tasks";
 import Footer from "./components/Footer";
 import AddTask from "./components/AddTask";
 import About from "./components/About";
+import ModifyTask from "./components/ModifyTask";
 import axios from "axios";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [showAddTask, setShowAddTask] = useState(false);
-
+  const [task, setTask] = useState("")
   
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const App = () => {
     const getTasks = async () => {
       // console.log("1");
       const tasksFromServer = await fetchTasks();
-      console.log("tasksFromServer?>", tasksFromServer);
+  //    console.log("tasksFromServer?>", tasksFromServer);
       setTasks(tasksFromServer);
     };
 
@@ -36,9 +37,9 @@ const App = () => {
       // const res = await fetch("http://localhost:5000/tasks");
       const res = await axios.get("/tasks");
       //console.log('res>',res.request.response)
-      console.log("res : ", res);
+ //     console.log("res : ", res);
       const data = res.data._embedded.tasks;
-      console.log("App.js fetchTasks() res data >", data);
+ //     console.log("App.js fetchTasks() res data >", data);
 
       return data;
     } catch (e) {
@@ -49,12 +50,12 @@ const App = () => {
   // 하나의 task 가져옴
   const fetchTask = async (id) => {
     try {
-      console.log("fetchTask()");
+ //     console.log("fetchTask()");
       //  const res = await fetch(`http://localhost:5000/tasks/${id}`);
       const res = await axios.get(`/tasks/${id}`);
   //console.log('fetchTask() res::',res)
   const data = res.data;
-      console.log("fetchTask() data -->", data);
+  //    console.log("fetchTask() data -->", data);
 
       return data;
     } catch (e) {
@@ -62,35 +63,32 @@ const App = () => {
     }
   };
 
-  const addTask = useCallback(
-    async (task) => {
+  const addTask =  async (task) => {
       //   console.log('task:',task)
       try {
         const res = await axios.post("/tasks", task);
 
         const data = res.data;
 
-        console.log("App.js addTask() data >", data);
+   //     console.log("App.js addTask() data >", data);
         setTasks([...tasks, data]);
       } catch (e) {
         console.log("App.js addTask() error >", e);
       }
-    },
-    [tasks]
-  );
+    };
 
 
 
   const deleteTask = async (id) => {
   
-    console.log('deleteTask() id:',id)
+ //   console.log('deleteTask() id:',id)
 
     try {
     //  console.log("url:", task._links.task.href);
        if (window.confirm("정말 지우시겠습니까?")) {
         const res = await axios.delete(`/tasks/${id}`);
 
-         console.log("deleteTask() res ::: ", res);
+     //    console.log("deleteTask() res ::: ", res);
 
         res.status < 300
           ? setTasks(tasks.filter((task) => task.id !== id))
@@ -105,7 +103,7 @@ const App = () => {
 
   const toggleReminder = async (id) => {
     try {
-      console.log("App.js toggleReminder() id >", id);
+    //  console.log("App.js toggleReminder() id >", id);
 
       const taskToToggle = await fetchTask(id);
        const updateTask = {
@@ -116,7 +114,7 @@ const App = () => {
        const res = await axios.patch(`/tasks/${id}`, updateTask);
        const data = res;
        
-       console.log("App.js toggleReminder() data >", data);
+     //  console.log("App.js toggleReminder() data >", data);
        setTasks(
          tasks.map((task) =>
          task.id === id ? { ...task, reminder: data.reminder } : task
@@ -127,13 +125,30 @@ const App = () => {
     }
   };
 
+
+  const modifyTask = async({text,date,reminder,id,eachTask}) => {
+         console.log('modifyTask() eachTask:',eachTask)
+        
+      try {
+  
+         const res = await axios.patch(`/tasks/${id}`,{text, date,reminder});
+
+
+       // console.log("App.js addTask() res >", res.config.data);
+         const data = res.config.data;
+   
+      } catch (e) {
+        console.log("App.js addTask() error >", e);
+      }
+    };
+
   return (
     <Router>
       <div className="container">
         <Header
-          onAdd={useCallback(() => {
+          onAdd={() => {
             setShowAddTask(!showAddTask);
-          }, [showAddTask])}
+          }, [showAddTask]}
           showAdd={showAddTask}
         />
         <hr />
@@ -149,6 +164,7 @@ const App = () => {
                 <Tasks
                   tasks={tasks}
                   onDelete={deleteTask}
+                  onModify={modifyTask} 
                   onToggle={toggleReminder}
                 />
               ) : (

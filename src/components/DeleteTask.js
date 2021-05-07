@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { RiDeleteBackLine } from "react-icons/ri";
 
-const DeleteTask = ({ onDelete, dataId ,eachTask}) => {
-  console.log('DeleteTask() id : ',eachTask.id);
+const DeleteTask = ({ onDelete,eachTask}) => {
+
   return (
     <div>
       <RiDeleteBackLine
