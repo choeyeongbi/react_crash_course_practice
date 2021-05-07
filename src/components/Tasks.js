@@ -1,6 +1,6 @@
 import EachTask from "./EachTask";
 import { memo } from "react";
-const Tasks = memo(({ tasks, onDelete, onToggle }) => {
+const Tasks = memo(({ tasks, onDelete, onToggle  }) => {
   console.log("Tasks>", tasks);
   return (
     <>
@@ -9,6 +9,7 @@ const Tasks = memo(({ tasks, onDelete, onToggle }) => {
           key={i}
           eachTask={task}
           onDelete={onDelete}
+          dataId = {task.id}
           onToggle={onToggle}
         />
       ))}

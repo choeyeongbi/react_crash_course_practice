@@ -1,7 +1,6 @@
 import DeleteTask from "./DeleteTask";
-import { memo } from "react";
-const EachTask = memo(({ eachTask, onDelete, onToggle }) => {
-  console.log("EachTask() eachTask>", eachTask);
+
+const EachTask = ({ eachTask, onDelete, onToggle }) => {
 
   return (
     <div
@@ -17,9 +16,9 @@ const EachTask = memo(({ eachTask, onDelete, onToggle }) => {
         />
       </h2>
 
-      <p>{eachTask.day}</p>
+      <p>{eachTask.date}</p>
     </div>
   );
-});
+};
 
 export default EachTask;

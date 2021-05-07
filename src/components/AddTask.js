@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 
 const AddTask = ({ onAdd }) => {
   const [text, setText] = useState("");
-  const [day, setDay] = useState("");
+  const [date, setDate] = useState("");
   const [reminder, setReminder] = useState(false);
 
   console.log("add task() onAdd", onAdd);
@@ -16,10 +16,10 @@ const AddTask = ({ onAdd }) => {
     }
     console.log("AddTask() onSubmit");
 
-    onAdd({ text, day, reminder });
+    onAdd({ text, date, reminder });
 
     setText("");
-    setDay("");
+    setDate("");
     setReminder(false);
   };
 
@@ -40,8 +40,8 @@ const AddTask = ({ onAdd }) => {
           <input
             type="text"
             placeholder="add date"
-            value={day}
-            onChange={useCallback((e) => setDay(e.target.value), [])}
+            value={date}
+            onChange={useCallback((e) => setDate(e.target.value), [])}
           />
         </div>
         <div className="form-control form-control-check">
